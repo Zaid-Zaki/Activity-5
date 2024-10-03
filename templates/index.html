@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple App with MySQL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Enter a Number</h1>
+        <input type="number" id="numberInput" placeholder="Enter a number" required>
+        <button onclick="sendData()">Submit</button>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function sendData() {
+            const number = document.getElementById('numberInput').value;
+            
+            // Send data to the backend
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ number: parseInt(number) }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Result: ${data.result}`;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
